@@ -1,7 +1,7 @@
 def main(argv)
   path, binary, user = Anon.parse(:bootstrap, argv)
   shlibs = []
-  binaries = ["/bin/sh", "/usr/sbin/sshd", binary]
+  binaries = ["/bin/sh", "/usr/sbin/sshd", "/usr/bin/ssh-keygen", binary]
 
   if path.nil? || binary.nil?
     Anon.error! "bootstrap requires -p PATH and -b BINARY"
@@ -37,7 +37,7 @@ def main(argv)
     Anon.error!(command.stderr)
   end
 
-  Anon.etc.each do |src|
+  [*Anon.bootfiles, *Anon.etc].each do |src|
     src, dest = src, File.join(path, File.dirname(src).sub(Anon.share, ''))
     command = Anon.cp(src, dest)
     Anon.say "cp #{src} #{dest}"

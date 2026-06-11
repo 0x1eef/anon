@@ -6,8 +6,8 @@ module Anon
   # @return [Array<String>]
   def self.tree
     [
-      "/etc", "/etc/ssh", "/root", "/tmp", "/lib",
-      "/libexec", "/sbin", "/bin", "/dev", "/var",
+      "/etc", "/etc/rc.d", "/etc/ssh", "/root", "/tmp",
+      "/lib", "/libexec", "/sbin", "/bin", "/dev", "/var",
       "/usr", "/usr/share", "/usr/libexec", "/usr/lib",
       "/usr/include", "/usr/bin", "/usr/sbin"
     ]
@@ -35,11 +35,7 @@ module Anon
   ##
   # @return [Array<String>]
   def self.bootfiles
-    [
-      File.join("/etc/rc"),
-      File.join("/etc/rc.subr"),
-      File.join("/etc/rc.d/sshd")
-    ]
+    ["/etc/rc", "/etc/rc.subr", "/etc/rc.d/sshd"]
   end
 
   ##
