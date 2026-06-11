@@ -1,4 +1,6 @@
-## About
+<p align="center">
+  <img width=150 height=150 src="anon.png">
+</p>
 
 Anon gives you a single `ssh` command that drops users straight into a
 terminal application — no signup, no account required, publicly
