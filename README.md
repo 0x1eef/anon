@@ -11,9 +11,7 @@ what's needed to run your program behind sshd, and handles the SSH
 configuration so the user's session is forced directly into your app via
 `ForceCommand`. No shell access, no escape, minimal attack surface.
 
-## What can you build with it?
-
-Anything that fits in a terminal and benefits from being public:
+## Scenarios
 
 | What it looks like | Example |
 |---|---|
@@ -63,13 +61,6 @@ Config files live in `share/anon/etc/` and use `.tt` templates for
 values like the username and binary path. They're copied into the jail
 as-is after template substitution. Modify `rc.conf` or add your own
 files there before building.
-
-## What does the name mean?
-
-The name is inspired by the OpenBSD project, and it stands for
-"anonymous". The OpenBSD project provides the general public with
-read-only access to their source code via a CVS account known as
-`anoncvs`, and it is open to the general public, hence the name `anon`.
 
 ## Future
 
