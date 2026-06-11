@@ -4,7 +4,7 @@
 #   ../mruby    # mruby checkout (sibling directory)
 #
 # Quick start:
-#   make        # build bin/anon and libexec/anon/anon-bootstrap
+#   make        # build bin/anon and libexec/anon/bootstrap
 #   make clean  # clean build artifacts
 
 MRUBY_DIR    ?= ../mruby
@@ -23,8 +23,8 @@ ANON_BIN               = bin/anon
 ANON_IREP              = tmp/anon_main.c
 ANON_OBJ               = tmp/anon_main.o
 
-BOOTSTRAP_ENTRYPOINT   = src/libexec/anon-bootstrap.rb
-BOOTSTRAP_BIN          = libexec/anon/anon-bootstrap
+BOOTSTRAP_ENTRYPOINT   = src/libexec/anon/bootstrap.rb
+BOOTSTRAP_BIN          = libexec/anon/bootstrap
 BOOTSTRAP_IREP         = tmp/anon_bootstrap_main.c
 BOOTSTRAP_OBJ          = tmp/anon_bootstrap_main.o
 
@@ -118,7 +118,7 @@ distclean: clean
 install: $(STANDALONE_BINS)
 	mkdir -p $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBEXECDIR)
 	install -m 755 $(ANON_BIN) $(DESTDIR)$(BINDIR)/anon
-	install -m 755 $(BOOTSTRAP_BIN) $(DESTDIR)$(LIBEXECDIR)/anon-bootstrap
+	install -m 755 $(BOOTSTRAP_BIN) $(DESTDIR)$(LIBEXECDIR)/bootstrap
 	if [ -d share ]; then \
 		mkdir -p $(DESTDIR)$(SHAREDIR); \
 		cp -R share/. $(DESTDIR)$(SHAREDIR)/; \
@@ -126,5 +126,5 @@ install: $(STANDALONE_BINS)
 
 deinstall:
 	rm -f $(DESTDIR)$(BINDIR)/anon
-	rm -f $(DESTDIR)$(LIBEXECDIR)/anon-bootstrap
+	rm -f $(DESTDIR)$(LIBEXECDIR)/bootstrap
 	rm -rf $(DESTDIR)$(SHAREDIR)
