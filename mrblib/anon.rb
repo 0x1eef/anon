@@ -24,6 +24,15 @@ module Anon
   end
 
   ##
+  # @return [Array<String>]
+  def self.etc
+    [
+      File.join(share, "etc", "group"),
+      File.join(share, "etc", "ssh", "sshd_config")
+    ]
+  end
+
+  ##
   # @param [Array<String>] argv
   # @return [Array<String, String>]
   def self.parse(command, argv)

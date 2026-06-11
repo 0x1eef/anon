@@ -29,15 +29,15 @@ def main(argv)
     end
   end
 
-  src = File.join(Anon.share, "etc", "master.passwd")
-  dest = File.join(path, "etc", "master.passwd")
+  src, dest = File.join(Anon.share, "etc", "master.passwd"),
+              File.join(path, "etc", "master.passwd")
   Anon.say "cp #{src} #{dest}"
   command =  Anon.cp(src, dest)
   if command.failure?
     Anon.error!(command.stderr)
   end
 
-  [File.join(Anon.share, "etc", "group"), File.join(Anon.share, "etc", "ssh", "sshd_config")].each do |src|
+  Anon.etc.each do |src|
     src, dest = src, File.join(path, File.dirname(src).sub(Anon.share, ''))
     command = Anon.cp(src, dest)
     Anon.say "cp #{src} #{dest}"
