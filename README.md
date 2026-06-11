@@ -25,14 +25,16 @@ No signup. No account. Just SSH.
 
 ## How it works
 
-Anon compiles into two static binaries via mruby (about 3MB each, zero
+Anon compiles into three static binaries via mruby (about 3MB each, zero
 runtime dependencies):
 
-- **`anon`** — a dispatch command that runs `bootstrap`.
-- **`bootstrap`** — does the actual work: creates the jail directory
-  tree, resolves shared libraries for the target binary and sshd and
-  copies them in, generates config files from templates, and creates
-  the user account.
+- **`anon`** — a dispatch command.
+- **`bootstrap`** — creates the jail directory tree, resolves shared
+  libraries for the target binary and sshd and copies them in, generates
+  config files from templates, creates the user account, and generates
+  SSH host keys.
+- **`serve`** — mounts devfs, attaches to an existing jail, starts sshd
+  inside it, and manages the lifecycle.
 
 The jail contains `/bin/sh` but virtually no programs — just sshd and
 your program. Probably around 1% of what a normal FreeBSD install ships.
@@ -51,9 +53,10 @@ git clone https://git.home.network/0x1eef/anon.git
 cd anon
 make
 ./bin/anon bootstrap -p /usr/local/jails/myapp -b /path/to/program -u appuser
+./bin/anon serve -n myapp -p /usr/local/jails/myapp
 ```
 
-Then point sshd at the jail, and `ssh appuser@host` lands in your app.
+Then `ssh appuser@host` lands in your app.
 
 ## Configuration
 
@@ -62,10 +65,22 @@ values like the username and binary path. They're copied into the jail
 as-is after template substitution. Modify `rc.conf` or add your own
 files there before building.
 
-## Future
+## Serve
 
-`anon serve` will spawn a jail directly — creating it, starting sshd
-inside, and managing the lifecycle in one command.
+`anon serve` mounts a devfs in the jail path, attaches to the jail by
+name, and starts sshd inside with the `-D` (foreground) flag. The jail
+must already exist — use `anon bootstrap` first to create it.
+
+Options:
+
+| Option | Description |
+|---|---|
+| `-n NAME` | Jail name |
+| `-p PATH` | Jail root path |
+
+The jail is created with `ip4=inherit` so it shares the host's network
+stack. When serve exits (sshd stops), the jail remains attached so it
+can be inspected or restarted.
 
 ## License
 
