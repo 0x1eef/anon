@@ -68,7 +68,8 @@ def main(argv)
   end
 
   [*binaries, *shlibs].each do |file|
-    src, dest = file, File.join(path, file)
+    target = (file == binary ? File.join("/bin", File.basename(file)) : file)
+    src, dest = file, File.join(path, target)
     Anon.say "#{src} -> #{dest}"
     command = Anon.cp(src, dest)
     if command.failure?
