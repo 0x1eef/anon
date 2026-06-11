@@ -23,6 +23,31 @@ configuration so the user's session is forced directly into your app via
 
 No signup. No account. Just SSH.
 
+## Commands
+
+#### Bootstrap
+
+Bootstraps a new jail.
+
+Options:
+
+| Option | Description |
+|---|---|
+| `-p PATH` | The jail location |
+| `-b BINARY` | The program to serve over sshd |
+| `-u USER` | The username that logs into ssh |
+
+#### Serve
+
+Serves a new jail running sshd.
+
+Options:
+
+| Option | Description |
+|---|---|
+| `-n NAME` | The jail name |
+| `-p PATH` | The jail location |
+
 ## How it works
 
 #### bin/anon
@@ -40,8 +65,8 @@ creates users account, and generates SSH host keys.
 
 `anon serve` mounts devfs, boots a new jail, attaches the current
 process to the jail, and starts sshd. The jail contains `/bin/sh`
-but virtually no programs — just sshd and your program. Probably
-around 1% of what a normal FreeBSD install is included.
+but virtually no programs — just sshd and your program. Probably 1%
+of a normal FreeBSD install is included.
 
 ## Network
 
@@ -69,22 +94,7 @@ values like the username and binary path. They're copied into the jail
 as-is after template substitution. Modify `rc.conf` or add your own
 files there before building.
 
-## Serve
 
-`anon serve` mounts a devfs in the jail path, attaches to the jail by
-name, and starts sshd inside with the `-D` (foreground) flag. The jail
-must already exist — use `anon bootstrap` first to create it.
-
-Options:
-
-| Option | Description |
-|---|---|
-| `-n NAME` | Jail name |
-| `-p PATH` | Jail root path |
-
-The jail is created with `ip4=inherit` so it shares the host's network
-stack. When serve exits (sshd stops), the jail remains attached so it
-can be inspected or restarted.
 
 ## License
 
