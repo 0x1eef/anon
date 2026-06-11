@@ -1,0 +1,17 @@
+---
+mruby:
+  version: 4.0.0
+  release_no: 40000
+  git_commit: 8aa73df75c59f8211a43d7de714a43dfa270d690
+builds:
+  anon:
+    https://github.com/0x1eef/mruby-command.git:
+      url: https://github.com/0x1eef/mruby-command.git
+      branch: v0.2.0
+      commit: 28f4c76e5d6b4518e2e2abde052437adb60e6727
+      version: 0.2.0
+    https://github.com/0x1eef/mruby-process.git:
+      url: https://github.com/0x1eef/mruby-process.git
+      branch: main
+      commit: c12e33aa768dd8527bcec1a4f580335c72935732
+      version: 0.2.0

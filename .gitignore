@@ -1,0 +1,7 @@
+/tmp/
+/bin/
+/libexec/
+/foo
+group
+master.passwd
+sshd_config

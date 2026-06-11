@@ -1,0 +1,22 @@
+Port 22
+AllowUsers %%USER%%
+
+Match User %%USER%%
+    ForceCommand %%BINARY%%
+    PermitTTY yes
+    PermitEmptyPasswords yes
+    PasswordAuthentication yes
+
+PermitRootLogin no
+PubkeyAuthentication no
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+DisableForwarding yes
+X11Forwarding no
+AllowTcpForwarding no
+PermitUserRC no
+
+SyslogFacility AUTH
+LogLevel VERBOSE
+
+UsePAM no
