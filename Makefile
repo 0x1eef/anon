@@ -13,7 +13,7 @@ BUILD_NAME    = anon
 BUILD_DIR     = $(MRUBY_DIR)/build/$(BUILD_NAME)
 RUBY_FILES   != find src mrblib -type f -name '*.rb' 2>/dev/null | sort
 
-PREFIX      ?= /usr/local/jails/robert
+PREFIX      ?= /usr/local
 BINDIR       = $(PREFIX)/bin
 LIBEXECDIR    = $(PREFIX)/libexec/anon
 SHAREDIR      = $(PREFIX)/share/$(BUILD_NAME)
