@@ -1,11 +1,9 @@
 def main(argv)
-  path, binary, user = AnonSSH.parse(:bootstrap, argv)
+  path, binary, user, filelist = AnonSSH.parse(:bootstrap, argv)
   shlibs = ["/lib/libgcc_s.so.1", "/libexec/ld-elf.so.1"]
-  binaries = ["/bin/sh",
-              "/usr/sbin/sshd",
-              "/usr/libexec/sshd-session",
-              "/usr/libexec/sshd-auth",
-              binary]
+  binaries = ["/bin/sh", "/usr/sbin/sshd", "/usr/libexec/sshd-session",
+              "/usr/libexec/sshd-auth", binary]
+  copies = []
 
   if path.nil? || binary.nil?
     AnonSSH.error! "bootstrap requires -p PATH and -b BINARY"
@@ -41,7 +39,19 @@ def main(argv)
     AnonSSH.error!(command.stderr)
   end
 
-  AnonSSH.etc.each do |src|
+  filelist.each do |src, dest|
+    if AnonSSH.binary?(src)
+      binaries << src
+      command, _ = AnonSSH.append! AnonSSH.ldd(src), shlibs
+      if command.failure?
+        AnonSSH.error!(command.stderr)
+      end
+    else
+      copies << src
+    end
+  end
+
+  [*copies, *AnonSSH.etc].each do |src|
     src, dest = src, File.join(path, File.dirname(src).sub(AnonSSH.share, ''))
     command = AnonSSH.cp(src, dest)
     AnonSSH.say "cp #{src} #{dest}"
@@ -58,20 +68,9 @@ def main(argv)
   end
 
   AnonSSH.say "discover shared libs"
-  seen = {}
   binaries.each do |file|
-    command = Command.new("ldd", "-a", file)
-    if command.success?
-      command.stdout.each_line do |line|
-        _, other = line.split("=>")
-        next unless other
-        match, = other.split(" ")
-        next unless match && match.start_with?("/")
-        next if seen[match]
-        seen[match] = true
-        shlibs << match
-      end
-    else
+    command, _ = AnonSSH.append! AnonSSH.ldd(file), shlibs
+    if command.failure?
       AnonSSH.error!(command.stderr)
     end
   end

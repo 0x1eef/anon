@@ -37,7 +37,8 @@ Options:
 |---|---|
 | `-p PATH` | The jail location |
 | `-b BINARY` | The program to serve over sshd |
-| `-u USER` | The username that logs into ssh |
+| `-u USER` | The username that logs into ssh (optional) |
+| `-f FILE` | A file that contains a list of files (1 per line) that are copied into the jail |
 
 #### Serve
 

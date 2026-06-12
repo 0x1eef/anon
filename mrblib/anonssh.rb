@@ -47,10 +47,11 @@ module AnonSSH
         when "-p" then path = argv.shift
         when "-b" then binary = argv.shift
         when "-u" then user = argv.shift
+        when "-f" then filelist = argv.shift
         else error!("unknown option: #{option}")
         end
       end
-      [path, binary, user || "anonssh"]
+      [path, binary, user || "anonssh", parse_filelist(filelist)]
     when :serve
       while option = argv.shift
         case option
@@ -61,6 +62,48 @@ module AnonSSH
       end
       [name, path]
     end
+  end
+
+  ##
+  # @param [String] filelist
+  # @return [Array<String>]
+  # @api private
+  def self.parse_filelist(filelist)
+    return [] unless filelist
+    files = []
+    File.open(filelist, "r") do |f|
+      while line = f.gets
+        files << line.chomp.strip
+      end
+    end
+    files
+  end
+
+  ##
+  # @param [String] file
+  # @return [Boolean]
+  def self.binary?(file)
+    command = Command.new("file", "--mime-type", file)
+    command.stdout.include?("binary") ||
+    command.stdout.include?("x-executable") ||
+    command.stdout.include?("x-pie-executable")
+  end
+
+  ##
+  # @param [Command] command
+  # @return [Array]
+  def self.append!(command, shlibs)
+    seen = {}
+    command.stdout.each_line do |line|
+      _, other = line.split("=>")
+      next unless other
+      match, = other.split(" ")
+      next unless match && match.start_with?("/")
+      next if seen[match]
+      seen[match] = true
+      shlibs << match
+    end
+    [command, shlibs]
   end
 
   ##

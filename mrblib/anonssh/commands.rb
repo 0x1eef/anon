@@ -27,6 +27,15 @@ module AnonSSH
     ##
     # @param [String] path
     # @return [Command]
+    def ldd(path)
+      Command
+        .new("ldd")
+        .argv("-a", path)
+    end
+
+    ##
+    # @param [String] path
+    # @return [Command]
     def ldconfig(path)
       Command
         .new("ldconfig")
