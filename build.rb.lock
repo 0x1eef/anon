@@ -2,7 +2,7 @@
 mruby:
   version: 4.0.0
   release_no: 40000
-  git_commit: 8aa73df75c59f8211a43d7de714a43dfa270d690
+  git_commit: 870a6b58ad91550917771a6232bb95c1684c98fb
 builds:
   anonssh:
     https://github.com/0x1eef/mruby-command.git:
