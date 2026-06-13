@@ -5,6 +5,8 @@ MRuby::Gem::Specification.new("anonssh") do |spec|
   spec.description = "..."
   spec.add_dependency "mruby-command", github: "0x1eef/mruby-command", branch: "v0.2.0"
   spec.add_dependency "mruby-jail", github: "0x1eef/mruby-jail", branch: "v0.1.0.beta.1"
+  spec.add_dependency "mruby-signal", github: "ksss/mruby-signal"
+
   spec.rbfiles = [
     File.join(__dir__, "mrblib", "anonssh", "io.rb"),
     File.join(__dir__, "mrblib", "anonssh", "commands.rb"),

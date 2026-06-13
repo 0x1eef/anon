@@ -29,7 +29,7 @@ def main(argv)
       Process.waitpid(pid)
     }
   ensure
-    jail&.remove
+    jail.remove
   end
 end
 main(ARGV)
