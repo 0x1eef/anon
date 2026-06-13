@@ -21,9 +21,15 @@ def main(argv)
     AnonSSH.error!(command.stderr)
   end
 
-  jail = Jail.create(name:,path:,ip4: "inherit",devfs_ruleset: 4)
-  jail.attach
-  pid = Process.spawn("/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config")
-  Process.waitpid(pid)
+  begin
+    jail = Jail.create(name:, path:, ip4: "inherit", devfs_ruleset: 4)
+    Process.waitpid fork {
+      jail.attach
+      pid = Process.spawn("/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config")
+      Process.waitpid(pid)
+    }
+  ensure
+    jail&.remove
+  end
 end
 main(ARGV)
